@@ -1,2 +1,4 @@
 data/
 src/a.out
+
+.ruff_cache
