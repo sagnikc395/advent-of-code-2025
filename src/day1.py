@@ -23,6 +23,9 @@ def solve_part1(contents):
     
     return zero_count
 
+def solve_part2(contents):
+    pass 
+
 
 def main():
     current_path = os.path.abspath(os.path.dirname(__file__))
