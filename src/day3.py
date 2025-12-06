@@ -6,10 +6,11 @@ def solve_part1(jolts_readings):
 
 
 def main():
-    with open("../data/day3-sample.txt",'r') as f:
-        p = f.read().strip().split('\n')
+    with open("../data/day3-sample.txt", "r") as f:
+        p = f.read().strip().split("\n")
 
     print(p)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
