@@ -1,4 +1,5 @@
-import bisect 
+import bisect
+
 
 def solve_part1(fresh_ingredients_ids, available_ingredient_ids):
     # fresh_ingredients_count = 0
@@ -10,10 +11,10 @@ def solve_part1(fresh_ingredients_ids, available_ingredient_ids):
 
     #     if id >= low and id <= high:
     #         return True
-        
-    #     return False 
-    
-    # idx = 0 
+
+    #     return False
+
+    # idx = 0
     # for id in available_ingredient_ids:
     #     if check_if_in_range(int(id),fresh_ingredients_ids[idx]):
     #         fresh_ingredients_count  += 1
@@ -21,76 +22,71 @@ def solve_part1(fresh_ingredients_ids, available_ingredient_ids):
     #         idx += 1
 
     # return fresh_ingredients_count
-    fresh_ingredients_count = 0 
+    fresh_ingredients_count = 0
     fresh_ingredients_ids_ranges = []
 
     for id_ranges in fresh_ingredients_ids:
-        low,high = id_ranges.split('-')
+        low, high = id_ranges.split("-")
         low = int(low)
         high = int(high)
-        fresh_ingredients_ids_ranges.append((low,high))
-    
+        fresh_ingredients_ids_ranges.append((low, high))
+
     available_ingredient_ids = [int(i) for i in available_ingredient_ids]
 
-    #merge sort and binary search 
+    # merge sort and binary search
     fresh_ingredients_ids_ranges.sort()
 
     merged = []
-    for start,end in fresh_ingredients_ids_ranges:
+    for start, end in fresh_ingredients_ids_ranges:
         if not merged or start > merged[-1][1]:
-            merged.append([start,end])
+            merged.append([start, end])
         else:
-            merged[-1][1] = max(merged[-1][1],end)
+            merged[-1][1] = max(merged[-1][1], end)
 
     print(f"Merged ranges: {merged}")
 
-    #querying and checking
+    # querying and checking
     start_points = [r[0] for r in merged]
 
     for val in available_ingredient_ids:
-        idx = bisect.bisect_right(start_points,val) - 1
+        idx = bisect.bisect_right(start_points, val) - 1
 
         if idx >= 0:
             range_start, range_end = merged[idx]
             if range_start <= val <= range_end:
                 fresh_ingredients_count += 1
-    
+
     return fresh_ingredients_count
 
 
 def solve_part2(fresh_ingredient_ids_ranges):
-    
     parsed_ranges = []
 
     for id_ranges in fresh_ingredient_ids_ranges:
-        low,high = id_ranges.split('-')
-        parsed_ranges.append([int(low),int(high)])
+        low, high = id_ranges.split("-")
+        parsed_ranges.append([int(low), int(high)])
 
     parsed_ranges.sort()
-    
-    #merge overlapping intervals
+
+    # merge overlapping intervals
     merged = []
     for start, end in parsed_ranges:
         if not merged:
-            merged.append([start,end])
+            merged.append([start, end])
         else:
             last_start, last_end = merged[-1]
 
             if start <= last_end + 1:
-                merged[-1][1] = max(last_end,end)
+                merged[-1][1] = max(last_end, end)
             else:
-                merged.append([start,end])
+                merged.append([start, end])
 
-    total_count = 0 
-    for start,end in merged:
+    total_count = 0
+    for start, end in merged:
         total_count += end - start + 1
 
     return total_count
 
-        
-    
-        
-    
 
 def main():
     with open("../data/day5-input.txt", "r") as f:
