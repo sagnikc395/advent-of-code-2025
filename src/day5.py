@@ -58,6 +58,39 @@ def solve_part1(fresh_ingredients_ids, available_ingredient_ids):
     return fresh_ingredients_count
 
 
+def solve_part2(fresh_ingredient_ids_ranges):
+    
+    parsed_ranges = []
+
+    for id_ranges in fresh_ingredient_ids_ranges:
+        low,high = id_ranges.split('-')
+        parsed_ranges.append([int(low),int(high)])
+
+    parsed_ranges.sort()
+    
+    #merge overlapping intervals
+    merged = []
+    for start, end in parsed_ranges:
+        if not merged:
+            merged.append([start,end])
+        else:
+            last_start, last_end = merged[-1]
+
+            if start <= last_end + 1:
+                merged[-1][1] = max(last_end,end)
+            else:
+                merged.append([start,end])
+
+    total_count = 0 
+    for start,end in merged:
+        total_count += end - start + 1
+
+    return total_count
+
+        
+    
+        
+    
 
 def main():
     with open("../data/day5-input.txt", "r") as f:
@@ -76,6 +109,9 @@ def main():
             available_ingredient_ids=available_ingredient_ids,
         )
     )
+
+    print("Part2 result: ")
+    print(solve_part2(fresh_ingredients_ids))
 
 
 if __name__ == "__main__":
